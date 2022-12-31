@@ -1,29 +1,46 @@
 package com.lalosapps.flightsearch.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lalosapps.flightsearch.data.local.Airport
 
 @Composable
 fun SuggestionItem(
     suggestion: Airport,
-    onClick: (Int) -> Unit,
+    onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
-            .clickable { onClick(suggestion.id) }
+            .clickable { onClick(suggestion.code) }
             .fillMaxWidth()
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Airport ${suggestion.id}")
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = null
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = suggestion.code,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = suggestion.name,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

@@ -26,9 +26,9 @@ fun FlightSearchApp() {
         ) {
             composable(route = Route.MAIN) {
                 MainScreen(
-                    navigateToFlights = { airportId ->
+                    navigateToFlights = { airportCode ->
                         navController.navigate(
-                            Route.Flights.createRoute(airportId)
+                            Route.Flights.createRoute(airportCode)
                         ) {
                             launchSingleTop = true
                         }
@@ -38,8 +38,8 @@ fun FlightSearchApp() {
             composable(
                 route = Route.Flights.ROUTE,
                 arguments = listOf(
-                    navArgument(Route.Flights.A1_INT_AIRPORT_ID) {
-                        type = NavType.IntType
+                    navArgument(Route.Flights.A1_STRING_AIRPORT_ID) {
+                        type = NavType.StringType
                     }
                 )
             ) {

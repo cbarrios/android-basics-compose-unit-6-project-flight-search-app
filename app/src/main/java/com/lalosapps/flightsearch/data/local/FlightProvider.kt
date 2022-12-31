@@ -10,7 +10,7 @@ object FlightProvider {
 
     val favorites = MutableStateFlow(emptyList<SaveableFlight>())
 
-    fun updatefavorites(list: List<SaveableFlight>) {
+    fun updateFavorites(list: List<SaveableFlight>) {
         favorites.update { list }
     }
 }
@@ -18,11 +18,10 @@ object FlightProvider {
 fun String.getSaveableFlights(): List<SaveableFlight> {
     val mine = AirportProvider.list.filter { it.code == this }
     val notMine = AirportProvider.list.filterNot { it.code == this }
-    var list = listOf<SaveableFlight>()
     val myAirport = mine.first()
     var countId = myAirport.id * notMine.size
-    notMine.forEach {
-        list = list + SaveableFlight(
+    val list = notMine.map {
+        SaveableFlight(
             id = countId++,
             departureCode = this,
             departureName = myAirport.name,

@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lalosapps.flightsearch.data.local.AirportProvider
 import com.lalosapps.flightsearch.data.local.FlightProvider
+import com.lalosapps.flightsearch.data.repository.AppRepository
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val appRepository: AppRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
     private val _favorites = FlightProvider.favorites
@@ -23,7 +25,22 @@ class MainViewModel : ViewModel() {
             MainUiState()
         )
 
+    init {
+        viewModelScope.launch {
+            val query = appRepository.getSearchQueryStream().first()
+            if (query.isNotEmpty()) processSearchQuery(query)
+            _uiState.update { it.copy(isLoading = false) }
+        }
+    }
+
     fun onQueryChange(query: String) {
+        viewModelScope.launch {
+            appRepository.saveSearchQuery(query)
+        }
+        processSearchQuery(query)
+    }
+
+    private fun processSearchQuery(query: String) {
         if (query.isEmpty()) {
             _uiState.update { it.copy(searchQuery = query) }
             return
@@ -40,6 +57,6 @@ class MainViewModel : ViewModel() {
     fun onFavoriteClick(flightId: Int) {
         val favorites = _favorites.value
         val found = favorites.find { it.id == flightId }!!
-        FlightProvider.updatefavorites(favorites - found)
+        FlightProvider.updateFavorites(favorites - found)
     }
 }

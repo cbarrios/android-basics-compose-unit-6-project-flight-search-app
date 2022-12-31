@@ -38,11 +38,11 @@ class FlightsViewModel(
         val favorites = favoritesFlights.value
         val found = favorites.find { it.id == flightId }
         if (found != null) {
-            FlightProvider.updatefavorites(favorites - found)
+            FlightProvider.updateFavorites(favorites - found)
         } else {
             val aux = saveableFlights.value
             val new = aux.find { it.id == flightId }!!.copy(isFavorite = true)
-            FlightProvider.updatefavorites(favorites + new)
+            FlightProvider.updateFavorites(favorites + new)
         }
     }
 }

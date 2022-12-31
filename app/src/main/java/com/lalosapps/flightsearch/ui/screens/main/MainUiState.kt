@@ -7,4 +7,5 @@ data class MainUiState(
     val searchQuery: String = "",
     val favorites: List<SaveableFlight> = emptyList(),
     val suggestions: List<Airport> = emptyList(),
+    val isLoading: Boolean = true
 )

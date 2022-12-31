@@ -1,7 +1,7 @@
 package com.lalosapps.flightsearch.ui.screens.main
 
-import com.lalosapps.flightsearch.data.local.Airport
-import com.lalosapps.flightsearch.data.local.SaveableFlight
+import com.lalosapps.flightsearch.data.local.room.Airport
+import com.lalosapps.flightsearch.data.local.room.SaveableFlight
 
 data class MainUiState(
     val searchQuery: String = "",

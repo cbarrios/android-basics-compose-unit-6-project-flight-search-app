@@ -1,9 +1,17 @@
-package com.lalosapps.flightsearch.data.local
+package com.lalosapps.flightsearch.data.local.room
 
-// App requirement to save favorite table with this schema (use later with room)
-data class Flight(
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "favorite")
+data class FavoriteFlight(
+    @PrimaryKey
+    @ColumnInfo(name = "id")
     val id: Int,
+    @ColumnInfo(name = "departure_code")
     val departureCode: String,
+    @ColumnInfo(name = "destination_code")
     val destinationCode: String
 ) {
     fun toSaveableFlight(departureName: String, destinationName: String): SaveableFlight {

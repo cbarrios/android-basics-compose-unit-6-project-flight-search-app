@@ -1,18 +1,13 @@
 package com.lalosapps.flightsearch.data.local
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import com.lalosapps.flightsearch.data.local.room.SaveableFlight
 
-object FlightProvider {
+object SaveableFlightProvider {
 
-    val saveableFlights =
-        AirportProvider.list.groupBy { it.code }.mapValues { it.key.getSaveableFlights() }
+    val saveableFlights: Map<String, List<SaveableFlight>>
+        get() =
+            AirportProvider.list.groupBy { it.code }.mapValues { it.key.getSaveableFlights() }
 
-    val favorites = MutableStateFlow(emptyList<SaveableFlight>())
-
-    fun updateFavorites(list: List<SaveableFlight>) {
-        favorites.update { list }
-    }
 }
 
 fun String.getSaveableFlights(): List<SaveableFlight> {

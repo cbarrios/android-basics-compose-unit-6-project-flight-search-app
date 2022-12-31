@@ -13,12 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lalosapps.flightsearch.R
-import com.lalosapps.flightsearch.data.local.SaveableFlight
+import com.lalosapps.flightsearch.data.local.room.FavoriteFlight
+import com.lalosapps.flightsearch.data.local.room.SaveableFlight
 
 @Composable
 fun SaveableFlightItem(
     saveableFlight: SaveableFlight,
-    onFavoriteClick: (Int) -> Unit,
+    onFavoriteClick: (FavoriteFlight) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -32,7 +33,15 @@ fun SaveableFlightItem(
                 .padding(8.dp)
         ) {
             IconButton(
-                onClick = { onFavoriteClick(saveableFlight.id) },
+                onClick = {
+                    onFavoriteClick(
+                        FavoriteFlight(
+                            saveableFlight.id,
+                            saveableFlight.departureCode,
+                            saveableFlight.destinationCode
+                        )
+                    )
+                },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Icon(

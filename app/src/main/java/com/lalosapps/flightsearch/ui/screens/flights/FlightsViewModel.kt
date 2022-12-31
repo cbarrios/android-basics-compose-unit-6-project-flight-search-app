@@ -3,26 +3,30 @@ package com.lalosapps.flightsearch.ui.screens.flights
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lalosapps.flightsearch.data.local.FlightProvider
-import com.lalosapps.flightsearch.data.local.SaveableFlight
+import com.lalosapps.flightsearch.data.local.SaveableFlightProvider
+import com.lalosapps.flightsearch.data.local.room.FavoriteFlight
+import com.lalosapps.flightsearch.data.local.room.SaveableFlight
+import com.lalosapps.flightsearch.data.repository.AppRepository
 import com.lalosapps.flightsearch.ui.navigation.Route
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class FlightsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appRepository: AppRepository
 ) : ViewModel() {
 
     val airportCode: String = savedStateHandle[Route.Flights.A1_STRING_AIRPORT_ID] ?: ""
 
     private val saveableFlights = MutableStateFlow(emptyList<SaveableFlight>())
-    private val favoritesFlights = FlightProvider.favorites
+    private val favoritesFlights = appRepository.getFavoriteFlightsStream()
     private val combinedData: Flow<List<SaveableFlight>> =
         combine(
             saveableFlights,
             favoritesFlights
         ) { flights, favorites ->
             flights.map { flight ->
-                val isFavorite = favorites.find { it.id == flight.id }?.isFavorite ?: false
+                val isFavorite = favorites.find { it.id == flight.id } != null
                 flight.copy(isFavorite = isFavorite)
             }
         }
@@ -31,18 +35,17 @@ class FlightsViewModel(
         combinedData.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     init {
-        saveableFlights.value = FlightProvider.saveableFlights[airportCode] ?: emptyList()
+        saveableFlights.value = SaveableFlightProvider.saveableFlights[airportCode] ?: emptyList()
     }
 
-    fun onFavoriteClick(flightId: Int) {
-        val favorites = favoritesFlights.value
-        val found = favorites.find { it.id == flightId }
-        if (found != null) {
-            FlightProvider.updateFavorites(favorites - found)
-        } else {
-            val aux = saveableFlights.value
-            val new = aux.find { it.id == flightId }!!.copy(isFavorite = true)
-            FlightProvider.updateFavorites(favorites + new)
+    fun onFavoriteClick(flight: FavoriteFlight) {
+        viewModelScope.launch {
+            val found = appRepository.getFavoriteFlight(flight.id)
+            if (found == null) {
+                appRepository.saveFavoriteFlight(flight)
+            } else {
+                appRepository.deleteFavoriteFlight(flight)
+            }
         }
     }
 }

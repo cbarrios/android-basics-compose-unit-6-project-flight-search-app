@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.lalosapps.flightsearch.data.local.Airport
+import com.lalosapps.flightsearch.data.local.room.Airport
 
 @Composable
 fun SuggestionItem(

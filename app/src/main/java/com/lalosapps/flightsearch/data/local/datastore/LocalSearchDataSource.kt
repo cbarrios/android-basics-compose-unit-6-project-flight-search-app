@@ -2,7 +2,7 @@ package com.lalosapps.flightsearch.data.local.datastore
 
 import kotlinx.coroutines.flow.Flow
 
-interface LocalDataSource {
+interface LocalSearchDataSource {
 
     suspend fun saveSearchQuery(query: String): Boolean
 

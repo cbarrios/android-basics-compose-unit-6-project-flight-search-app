@@ -1,4 +1,4 @@
-package com.lalosapps.flightsearch.data.local
+package com.lalosapps.flightsearch.data.local.room
 
 data class SaveableFlight(
     val id: Int,

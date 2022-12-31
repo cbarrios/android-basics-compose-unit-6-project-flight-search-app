@@ -9,13 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.lalosapps.flightsearch.data.local.SaveableFlight
+import com.lalosapps.flightsearch.data.local.room.FavoriteFlight
+import com.lalosapps.flightsearch.data.local.room.SaveableFlight
 
 @Composable
 fun FlightsView(
     title: String,
     list: List<SaveableFlight>,
-    onFavoriteClick: (Int) -> Unit,
+    onFavoriteClick: (FavoriteFlight) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (list.isEmpty()) {

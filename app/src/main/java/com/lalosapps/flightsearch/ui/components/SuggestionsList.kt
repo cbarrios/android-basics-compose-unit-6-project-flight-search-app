@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.lalosapps.flightsearch.R
-import com.lalosapps.flightsearch.data.local.Airport
+import com.lalosapps.flightsearch.data.local.room.Airport
 
 @Composable
 fun SuggestionsList(

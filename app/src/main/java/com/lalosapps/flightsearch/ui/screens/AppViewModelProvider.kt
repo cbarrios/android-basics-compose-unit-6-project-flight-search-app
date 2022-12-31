@@ -24,7 +24,8 @@ object AppViewModelProvider {
         // Initializer for FlightsViewModel
         initializer {
             FlightsViewModel(
-                this.createSavedStateHandle()
+                this.createSavedStateHandle(),
+                application().appContainer.appRepository
             )
         }
     }

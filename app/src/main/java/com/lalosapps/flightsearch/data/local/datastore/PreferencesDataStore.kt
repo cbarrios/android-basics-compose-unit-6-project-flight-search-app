@@ -15,7 +15,7 @@ import java.io.IOException
 private const val SEARCH_PREFERENCE_NAME = "search_preferences"
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = SEARCH_PREFERENCE_NAME)
 
-class PreferencesDataStore(private val dataStore: DataStore<Preferences>) : LocalDataSource {
+class PreferencesDataStore(private val dataStore: DataStore<Preferences>) : LocalSearchDataSource {
 
     companion object {
         val SEARCH_QUERY = stringPreferencesKey("search_query")

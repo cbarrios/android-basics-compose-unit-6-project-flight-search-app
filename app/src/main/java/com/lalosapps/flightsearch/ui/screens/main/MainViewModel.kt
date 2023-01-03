@@ -60,15 +60,12 @@ class MainViewModel(private val appRepository: AppRepository) : ViewModel() {
     }
 
     private fun processSearchQuery(query: String) {
-        if (query.isEmpty()) {
-            _uiState.update { it.copy(searchQuery = query) }
-            return
-        }
+        _uiState.update { it.copy(searchQuery = query) }
+        if (query.isEmpty()) return
         viewModelScope.launch {
             val suggestions = appRepository.getAirportSuggestions(query)
             _uiState.update {
                 it.copy(
-                    searchQuery = query,
                     suggestions = suggestions,
                     isLoading = false
                 )
